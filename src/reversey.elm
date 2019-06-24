@@ -4,9 +4,11 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
 
 -- MAIN
+
 main = Browser.sandbox { init = init, update = update, view = view }
 
 -- MODEL
+
 type alias Model = { content: String }
 
 init: Model
