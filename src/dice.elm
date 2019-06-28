@@ -21,16 +21,16 @@ type alias Model  =  {
   dieFace: Int
   }
 
-images : Array String
-images = 
-  Array.fromList [
-    "https://etc.usf.edu/clipart/42100/42158/die_01_42158_mth.gif",
-    "https://etc.usf.edu/clipart/42100/42159/die_02_42159_mth.gif",
-    "https://etc.usf.edu/clipart/42100/42160/die_03_42160_mth.gif",
-    "https://etc.usf.edu/clipart/42100/42161/die_04_42161_mth.gif",
-    "https://etc.usf.edu/clipart/42100/42162/die_05_42162_mth.gif",
-    "https://etc.usf.edu/clipart/42100/42164/die_06_42164_mth.gif"
-  ]
+-- images : Array String
+-- images = 
+--   Array.fromList [
+--     "https://etc.usf.edu/clipart/42100/42158/die_01_42158_mth.gif",
+--     "https://etc.usf.edu/clipart/42100/42159/die_02_42159_mth.gif",
+--     "https://etc.usf.edu/clipart/42100/42160/die_03_42160_mth.gif",
+--     "https://etc.usf.edu/clipart/42100/42161/die_04_42161_mth.gif",
+--     "https://etc.usf.edu/clipart/42100/42162/die_05_42162_mth.gif",
+--     "https://etc.usf.edu/clipart/42100/42164/die_06_42164_mth.gif"
+--   ]
 
 init : () -> (Model, Cmd Msg)
 init _ =
@@ -68,7 +68,7 @@ view model =
   div []
   [
     h1 [] [Html.text (String.fromInt model.dieFace)],
-    dieImage (model.dieFace),
+    -- dieImage (model.dieFace),
     dieSvg (model.dieFace),
     button [onClick Roll] [Html.text "Roll"]
   ]
@@ -98,33 +98,20 @@ dieSvg face =
 
 dotsSvg : Int -> List (Svg msg)
 dotsSvg face =  
-  List.concat
-  [
-    if (face > 1) then 
-      [
-        topLeft |> dot,
-        topLeft |> right |> right |> down |> down |> dot
-      ]
-    else [],
-
-    if (face > 3) then 
-      [
-        topLeft |> down |> down |> dot,
-        topLeft |> right |> right |> dot
-      ]
-    else [],
-
-    if (face > 5) then 
-      [
-        topLeft |> down |> dot,
-        topLeft |> right |> right |> down |> dot
-      ]
-    else [],
-
-    -- Middle circle
+  List.filterMap (\(x, y) -> if (face > x) then Just y else Nothing) 
+   circles ++ -- Middle circle
     if (modBy 2 face > 0) then 
       [topLeft |> down |> right |> dot]
     else []
+
+circles = 
+  [
+    (1, topLeft |> dot),
+    (1, topLeft |> right |> right |> down |> down |> dot),
+    (3, topLeft |> down  |> down  |> dot),
+    (3, topLeft |> right |> right |> dot),
+    (5, topLeft |> down  |> dot),
+    (5, topLeft |> right |> right |> down |> dot)
   ]
 
 stride : Float
@@ -154,10 +141,10 @@ dot (x,y) =
       ][]
     ]
 
-dieImage : Int -> Html.Html msg
-dieImage face = 
-  img [src (dieUrl face)][]
+-- dieImage : Int -> Html.Html msg
+-- dieImage face = 
+--   img [src (dieUrl face)][]
 
-dieUrl : Int -> String
-dieUrl dieFace =
-   Maybe.withDefault "" (Array.get (dieFace - 1) ( images))
+-- dieUrl : Int -> String
+-- dieUrl dieFace =
+--    Maybe.withDefault "" (Array.get (dieFace - 1) ( images))
