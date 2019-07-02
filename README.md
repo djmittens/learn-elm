@@ -4,7 +4,12 @@ So elm is a strongly typed functional programming language, loosely related to H
 ## Installation
 to install elm you just have to do this
 ```
-npm install -g elm elm-test elm-format
+npm install -g elm elm-test elm-format elm-analyse
 ```
 
 VS code support for it seems to be pretty solid.
+
+To startup the reactor and run the code all you need to do is ask for elm reactor
+```
+elm reactor
+```
